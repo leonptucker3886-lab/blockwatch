@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlockWatch v0.1 — Spec Op block escalator</title>
+<style>body{font-family:system-ui,sans-serif;background:#FAFAF9;color:#18181B;margin:0;padding:20px;max-width:900px;margin:auto}
+h1{margin:0 0 4px}.sub{color:#666;margin-bottom:16px}.card{border:1px solid #DEDDD8;border-radius:10px;padding:14px;margin:10px 0;background:#fff}
+.red{background:#fde8e8;border-color:#d92d20}.esc{color:#fff;background:#d92d20;font-weight:700;padding:3px 8px;border-radius:6px;display:inline-block;margin-top:6px}
+.open{color:#b54708}.done{color:#008300}.meta{font-size:14px;color:#555}</style></head><body>
+<h1>BlockWatch v0.1</h1><div class="sub">Every squad block. Open &gt; 15 minutes = red + ESCALATE TO ANNOUNCER. Source: <code>blocks.json</code>. Refreshes every 60s.</div>
+<div id="sum"></div><div id="list">Loading…</div>
+<script>
+async function load(){const d=await (await fetch('blocks.json?'+Date.now())).json();const now=Date.now();let open=0,esc=0;
+const h=d.blocks.map(b=>{const s=new Date(b.started).getTime(),end=b.resolved?new Date(b.resolved).getTime():now,m=Math.round((end-s)/60000);
+const isEsc=!b.resolved&&m>15;if(!b.resolved)open++;if(isEsc)esc++;
+return `<div class="card ${isEsc?'red':''}"><b>${b.who}</b> — <span class="${b.resolved?'done':'open'}">${b.resolved?'RESOLVED':'OPEN'}</span> · ${m} min<div>Blocked by: ${b.blocked_by}</div><div class="meta">Started ${new Date(b.started).toLocaleString()}${b.resolved?' · Resolved '+new Date(b.resolved).toLocaleString():''}</div>${isEsc?'<div class="esc">ESCALATE TO ANNOUNCER</div>':''}</div>`}).join('');
+document.getElementById('sum').innerHTML=`<b>${open}</b> open · <b>${esc}</b> to escalate · ${d.blocks.length} total`;document.getElementById('list').innerHTML=h||'No blocks.';}
+load();setInterval(load,60000);</script></body></html>
