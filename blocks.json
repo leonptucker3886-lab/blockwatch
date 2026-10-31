@@ -1,0 +1,7 @@
+{
+  "updated": "2026-10-31T09:30:00Z",
+  "blocks": [
+    {"id": "b1", "who": "CPL Nolin Peter", "blocked_by": "squadpulse repo did not exist, could not commit deliverables.json", "started": "2026-10-31T07:03:00Z", "resolved": "2026-10-31T07:11:00Z"},
+    {"id": "b2", "who": "SGT Matu May", "blocked_by": "SquadPulse scheduled :05 GitHub Action never fired after 07:11 UTC", "started": "2026-10-31T08:05:00Z", "resolved": null}
+  ]
+}
